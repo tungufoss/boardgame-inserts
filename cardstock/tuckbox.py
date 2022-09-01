@@ -23,36 +23,16 @@ class tuckbox:
         image_width = self.width*2+self.depth*2+self.gluedepth
         image_height = self.height+self.depth*2+self.tuckmargin*3
         self.scorecolor = 'red'
-        self.img = draw.Drawing(image_width, image_height, displayInline=False)
-        r = draw.Rectangle(0, 0, image_width, image_height, fill='white')
-        self.img.append(r)
+        self.img = draw.Drawing(image_width, image_height, displayInline=False)        
 
     def draw(self):
         self.x0, self.y0 = 0, self.depth+self.tuckmargin*1.5
         # Draw polygon, cut lines
         p = draw.Path(id="cut-tuckbox",
                       stroke_width=3, stroke='black',
-                      fill='none')
-
-        x, y = self.x0, self.y0
-        p.M(x, y)  # p1
-        y += self.height
-        p.L(x, y)  # p2
-        x += self.margin
-        y += self.dustdepth*1/3
-        p.L(x, y)  # p3
-        x += self.margin
-        y += self.dustdepth*2/3
-        p.L(x, y)  # p4
-        x += (self.depth-self.margin*2)
-        p.L(x, y)  # p5
-        if self.dustdepth > self.depth:
-            missing = self.dustdepth-self.depth
-            y -= missing
-            p.L(x, y)
-            y -= self.dustdepth-missing
-        else:
-            y -= self.dustdepth
+                      fill='white')       
+        x = self.x0+self.depth
+        y = self.y0+self.height
         # MOVE
         p.M(x+self.tuckcut, y+self.margin)
         p.L(x+self.tuckcut, y)
@@ -147,9 +127,27 @@ class tuckbox:
         p.L(x, y)  # p32
         x -= self.margin
         y += self.dustdepth*1/3
-        p.L(x, y)  # p33
-        x -= self.margin
-        p.L(x, y)  # p34
+        p.L(x, y)  # p33        
+        y += self.height
+        p.L(x, y)  # p2
+        x += self.margin
+        y += self.dustdepth*1/3
+        p.L(x, y)  # p3
+        x += self.margin
+        y += self.dustdepth*2/3
+        p.L(x, y)  # p4
+        x += (self.depth-self.margin*2)
+        p.L(x, y)  # p5
+        if self.dustdepth > self.depth:
+            missing = self.dustdepth-self.depth
+            y -= missing
+            p.L(x, y)
+            y -= self.dustdepth-missing
+        else:
+            y -= self.dustdepth
+        
+        
+        
         self.img.append(p)
 
         # Draw score line
